@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>Cake.CodeQL.Cli</AssemblyName>
+		<TargetFramework>net6.0</TargetFramework>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<WarningLevel>0</WarningLevel>
+		<DocumentationFile>bin\$(Configuration)\net6.0\$(AssemblyName).xml</DocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<ImplicitUsings>true</ImplicitUsings>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Version>3.0.0</Version>
+		<Title>Cake.CodeQL.Cli</Title>
+		<Description>Cake.CodeQL.Cli is a set of Cake aliases that integrate with GitHub Advanced Security (GAS). GAS uses CodeQL to find vulnerabilities in your code. The code must be hosted GitHub or GitHub Enterprise.</Description>
+		<Authors>louisfischer, cake-contrib</Authors>
+		<Company>Cake-Contrib</Company>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/cake-contrib/Cake.CodeQL.Cli.git</PackageProjectUrl>
+		<PackageTags>cake;codeql;scan;scanning;github;github enterprise;github advanced security;gas;</PackageTags>
+		<RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Copyright>Copyright © 2022 - $([System.DateTime]::Now.Year) Cake Contributions Organization</Copyright>
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
+		<Nullable>warnings</Nullable>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Cake.Core" Version="3.0.0" PrivateAssets="All" />
+		<PackageReference Include="Cake.Common" Version="3.0.0" PrivateAssets="All" />
+		<PackageReference Include="Cake.Http" Version="2.0.0" />
+		<PackageReference Include="JWT" Version="10.0.2" />
+	</ItemGroup>
+	<Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(OutputPath)\**\$(AssemblyName).*">
+				<PackagePath>lib\$(TargetFramework)\</PackagePath>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+	</Target>
+	<ItemGroup>
+		<Using Include="Cake.CodeQL.Cli.Database" />
+		<Using Include="Cake.CodeQL.Cli.Upload" />
+		<Using Include="Cake.Common" />
+		<Using Include="Cake.Common.IO" />
+		<Using Include="Cake.Common.Net" />
+		<Using Include="Cake.Common.Tools.Command" />
+		<Using Include="Cake.Core" />
+		<Using Include="Cake.Core.Annotations" />
+		<Using Include="Cake.Core.Diagnostics" />
+		<Using Include="Cake.Core.IO" />
+		<Using Include="Cake.Core.Tooling" />
+		<Using Include="System.Reflection" />
+		<Using Include="Cake.Http" />
+		<Using Include="JWT.Algorithms" />
+		<Using Include="JWT.Builder" />
+		<Using Include="System.Security.Cryptography" />
+	</ItemGroup>
+</Project>
