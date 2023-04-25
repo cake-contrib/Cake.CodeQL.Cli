@@ -1,4 +1,4 @@
-﻿namespace Cake.CodeQL.Cli.Install;
+namespace Cake.CodeQL.Cli.Install;
 
 /// <summary>
 /// Tool for downloading and installing CodeQL
@@ -31,11 +31,17 @@ public class CodeQLInstallTool
             var downloadFileUri = GetCodeQLDownloadUrl();
             var outFilePath = GetCodeQLFilePath(settings);
 
+            // 2. Ensure out file not exits
+            try { if (_context.FileExists(outFilePath)) _context.DeleteFile(outFilePath); } catch { }
+
             // 2. Download CodeQL
             _context.DownloadFile(downloadFileUri, outFilePath);
 
             // 3. Installs the CodeQL CLI on the Host Operating System.
             ExtractCodeQL(outFilePath, installDir);
+
+            // 4. Ensure File is removed
+            try { if (_context.FileExists(outFilePath)) _context.DeleteFile(outFilePath); } catch { }
         }
 
         // 4. Verifies that the CodeQL CLI is correctly set up to create and analyze databases.
@@ -90,20 +96,28 @@ public class CodeQLInstallTool
     private DirectoryPath GetWorkingDirectory(CodeQLInstallToolSettings settings) =>
         settings.WorkingDirectory != null ? settings.WorkingDirectory : _context.Environment.WorkingDirectory;
 
-    private FilePath GetCodeQLFilePath(CodeQLInstallToolSettings settings)
-    {
-        var workingDir = GetWorkingDirectory(settings);
-        var downloadFile = GetCodeQLDownloadUrl();
-        var filePath = _context.File(System.IO.Path.GetFileName(downloadFile));
-
-        return workingDir.CombineWithFilePath(filePath);
-    }
+    private FilePath GetCodeQLFilePath(CodeQLInstallToolSettings settings) =>
+        _context.MakeAbsolute(_context.Directory(System.IO.Path.GetTempPath()))
+               .CombineWithFilePath(_context.File(System.IO.Path.GetFileName(_context.Environment.Platform.Family switch
+               {
+                   PlatformFamily.Linux => Downloads.Linux,
+                   PlatformFamily.Windows => Downloads.Windows,
+                   PlatformFamily.OSX => Downloads.OSX,
+                   _ => throw new NotSupportedException("Operating System is not supported.")
+               })));
 
     private string GetCodeQLDownloadUrl() => _context.Environment.Platform.Family switch
     {
-        PlatformFamily.Linux => "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz",
-        PlatformFamily.Windows => "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz",
-        PlatformFamily.OSX => "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-osx64.tar.gz",
+        PlatformFamily.Linux => Downloads.Linux,
+        PlatformFamily.Windows => Downloads.Windows,
+        PlatformFamily.OSX => Downloads.OSX,
         _ => throw new NotSupportedException("Operating System is not supported.")
     };
+
+    private class Downloads
+    {
+        public const string Linux = "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz";
+        public const string Windows = "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz";
+        public const string OSX = "https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-osx64.tar.gz";
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Cake.CodeQL.Cli.Install;
+using Cake.CodeQL.Cli.Install;
+using Cake.CodeQL.Cli.Report;
 
 namespace Cake.CodeQL.Cli;
 
@@ -146,4 +147,72 @@ public static class CodeQLAliases
         var tool = new CodeQLInstallTool(context);
         tool.Install(settings);
     }
+
+    /// <summary>
+    /// Installs GitHub Advanced Security Code Scan Report cli on the host agent.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <para></para>
+    /// <code>
+    /// <![CDATA[
+    ///  //Example of C# compiled language
+    ///
+    ///  CodeQLReportInstall(context, nnew CodeQLReportInstallToolSettings
+   	///  {
+    ///     Force = false,
+    ///     WorkingDirectory = "./",
+    ///     InstallDirectory = "./tools/codeql/reports"
+    ///  }/
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Reports")]
+    public static void CodeQLReportInstall(this ICakeContext context, CodeQLReportInstallToolSettings settings)
+    {
+        if (context == null) throw new ArgumentNullException(nameof(context));
+        if (settings == null) throw new ArgumentNullException(nameof(settings));
+
+        CodeQLAddinInformation.LogVersionInformation(context.Log);
+        var tool = new CodeQLReportInstallTool(context);
+        tool.Install(settings);
+    }
+
+    /// <summary>
+    /// Generates an GitHub Advanced Security Code Scan Report
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <para></para>
+    /// <code>
+    /// <![CDATA[
+    ///
+    ///  CodeQLReportGenerate(context, nnew CodeQLReportInstallToolSettings
+    ///  {
+    ///     WorkingDirectory = "./"
+    ///     GitHubToken = "ghp_xxxxxxxxxxxxxxxxxx"
+    ///     Repository = "peter-murray/node-hue-api",
+    ///     SarifReportDirectory = "../results",
+    ///     OutputDirectory = "./",
+    ///     GitHubApiUrl = "https://api.github.com"
+    ///  }
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Reports")]
+    public static void CodeQLReportGenerate(this ICakeContext context, CodeQLSecurityReportToolSettings settings)
+    {
+        if (context == null) throw new ArgumentNullException(nameof(context));
+        if (settings == null) throw new ArgumentNullException(nameof(settings));
+
+        CodeQLAddinInformation.LogVersionInformation(context.Log);
+        var tool = new CodeQLSecurityReportTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools, context.Log);
+        tool.GenerateReport(settings);
+    }
 }
+
+

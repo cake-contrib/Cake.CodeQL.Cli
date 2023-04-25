@@ -1,4 +1,4 @@
-﻿namespace Cake.CodeQL.Cli;
+namespace Cake.CodeQL.Cli;
 
 /// <summary>
 /// Base class for all CodeQL Scanning tools.
@@ -39,7 +39,7 @@ public abstract class CodeQLTool<TSettings> : Tool<TSettings>
     protected sealed override IEnumerable<string> GetToolExecutableNames() => new[] { "codeql", "codeql.exe" };
 
     /// <summary>
-    /// Runs libman.
+    /// Runss CodeQL
     /// </summary>
     /// <param name="settings">The settings.</param>
     protected void RunCore(TSettings settings) => RunCore(settings, new ProcessSettings(), null);

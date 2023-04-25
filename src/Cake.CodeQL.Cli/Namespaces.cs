@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Cake.CodeQL.Cli
 {
@@ -34,10 +34,21 @@ namespace Cake.CodeQL.Cli.Upload
     }
 }
 
-namespace Cake.CodeQL.CliInstall
+namespace Cake.CodeQL.Cli.Report
 {
     /// <summary>
     /// This namespace contain types used to install CodeQL
+    /// </summary>
+    [CompilerGenerated]
+    internal class NamespaceDoc
+    {
+    }
+}
+
+namespace Cake.GitHub.Tokens
+{
+    /// <summary>
+    /// This namespace contain types used for Generating a GitHub App Installation Token
     /// </summary>
     [CompilerGenerated]
     internal class NamespaceDoc
