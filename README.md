@@ -17,7 +17,7 @@ This plugin is a set of Cake aliases for [GitHub CodeQL CLI](https://docs.github
 ```
 ### Cake Frosting Project
 ```xml
-<PackageReference Include="Cake.CodeQL.Cli" Version="1.0.0" />
+<PackageReference Include="Cake.CodeQL.Cli" Version="3.2.0" />
 ```
 
 ## Discussion

@@ -5,6 +5,14 @@ VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.CodeQL.Cli", "src\Cake.CodeQL.Cli\Cake.CodeQL.Cli.csproj", "{32D1A768-6DDF-4127-967D-DA9BD00C8F26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{46391845-2542-4C09-B354-DFB023C6FB4E}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		.github\workflows\build.yml = .github\workflows\build.yml
+		cake.config = cake.config
+		.github\workflows\codeql.yml = .github\workflows\codeql.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -7,6 +7,9 @@ namespace Cake.CodeQL.Cli;
 public abstract class CodeQLTool<TSettings> : Tool<TSettings>
         where TSettings : CodeQLToolSettings
 {
+    private readonly IFileSystem fileSystem;
+    private readonly ICakeEnvironment environment;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CodeQLTool{TSettings}"/> class.
     /// </summary>
@@ -18,6 +21,8 @@ public abstract class CodeQLTool<TSettings> : Tool<TSettings>
     protected CodeQLTool(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools, ICakeLog log)
         : base(fileSystem, environment, processRunner, tools)
     {
+        this.fileSystem = fileSystem;
+        this.environment = environment;
         CakeLog = log;
     }
 
@@ -36,7 +41,24 @@ public abstract class CodeQLTool<TSettings> : Tool<TSettings>
     /// Gets the possible names of the tool executable.
     /// </summary>
     /// <returns>The tool executable name.</returns>
-    protected sealed override IEnumerable<string> GetToolExecutableNames() => new[] { "codeql", "codeql.exe" };
+    protected sealed override IEnumerable<string> GetToolExecutableNames() => new[] { "codeql.exe", "codeql" };
+
+    /// <summary>
+    /// CodeQL Installs into a subdirectory. This checks the subdirectories as well
+    /// </summary>
+    /// <param name="settings"></param>
+    /// <returns></returns>
+    protected override IEnumerable<FilePath> GetAlternativeToolPaths(TSettings settings)
+    {
+        var toolResolver = new CodeQLResolveToolPath(fileSystem, environment);
+
+        var toolPaths = toolResolver.Find(GetToolExecutableNames(), settings.WorkingDirectory.Combine("tools"));
+
+        if(toolPaths == null || toolPaths.Count() < 1)
+            return base.GetAlternativeToolPaths(settings);
+
+        return toolPaths;
+    }
 
     /// <summary>
     /// Runss CodeQL
