@@ -14,7 +14,7 @@
 		<ImplicitUsings>true</ImplicitUsings>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.0</Version>
+		<Version>0.0.0</Version>
 		<Title>Cake.CodeQL.Cli</Title>
 		<Description>Cake.CodeQL.Cli is a set of Cake aliases that integrate with GitHub Advanced Security (GAS). GAS uses CodeQL to find vulnerabilities in your code. The code must be hosted GitHub or GitHub Enterprise.</Description>
 		<Authors>louisfischer, cake-contrib</Authors>
