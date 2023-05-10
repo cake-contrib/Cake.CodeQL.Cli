@@ -89,7 +89,7 @@ public class CodeQLInstallTool
         argBuilder.Append("-C");
         argBuilder.AppendQuoted(installDir.FullPath);
 
-        _context.StartProcess("tar", new ProcessSettings { Arguments = argBuilder });
+        _context.StartProcess("tar", new ProcessSettings { Arguments = argBuilder, Silent = true });
     }
 
     private void VerifyCodeQL(CodeQLInstallToolSettings settings)
@@ -97,7 +97,7 @@ public class CodeQLInstallTool
         var toolResolver = new CodeQLResolveToolPath(_context.FileSystem, _context.Environment);
         var toolPaths = toolResolver.Find(_executableNames, settings.WorkingDirectory);
 
-        var exePath = toolPaths.FirstOrDefault(tp => _context.IsRunningOnWindows() && tp.HasExtension);
+        var exePath = toolPaths.FirstOrDefault(tp => _context.IsRunningOnWindows() ? tp.HasExtension : !tp.HasExtension);
 
         _context.Command
         (
