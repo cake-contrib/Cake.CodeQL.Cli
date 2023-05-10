@@ -1,4 +1,6 @@
-﻿namespace Cake.CodeQL.Cli.Report;
+﻿using System;
+
+namespace Cake.CodeQL.Cli.Report;
 
 /// <summary>
 /// Tool for generating a pdf summery of GitHub Security report
@@ -8,6 +10,9 @@
 /// </example>
 public class CodeQLSecurityReportTool : Tool<CodeQLSecurityReportToolSettings>
 {
+    private readonly IFileSystem fileSystem;
+    private readonly ICakeEnvironment environment;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CodeQLSecurityReportTool"/> class.
     /// </summary>
@@ -17,7 +22,15 @@ public class CodeQLSecurityReportTool : Tool<CodeQLSecurityReportToolSettings>
     /// <param name="tools">The tool locator.</param>
     /// <param name="log">Cake log instance.</param>
     public CodeQLSecurityReportTool(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools, ICakeLog log)
-        : base(fileSystem, environment, processRunner, tools) => CakeLog = log;
+        : base(fileSystem, environment, processRunner, tools)
+    {
+        this.fileSystem = fileSystem;
+        this.environment = environment;
+        this.environment = environment;
+        this.fileSystem = fileSystem;
+        CakeLog = log;
+    }
+
 
     /// <summary>
     /// Cake log instance.
@@ -35,6 +48,19 @@ public class CodeQLSecurityReportTool : Tool<CodeQLSecurityReportToolSettings>
         "github-security-report-mac-x64",
         "github-security-report-linux-x64"
     };
+
+
+    protected override IEnumerable<FilePath> GetAlternativeToolPaths(CodeQLSecurityReportToolSettings settings)
+    {
+        var toolResolver = new CodeQLResolveToolPath(fileSystem, environment);
+
+        var toolPaths = toolResolver.Find(GetToolExecutableNames(), settings.WorkingDirectory.Combine("tools"));
+
+        if (toolPaths == null || toolPaths.Count() < 1)
+            return base.GetAlternativeToolPaths(settings);
+
+        return toolPaths;
+    }
 
     /// <summary>
     /// Gets the name of the tool.

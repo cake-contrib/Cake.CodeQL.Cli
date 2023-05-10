@@ -1,3 +1,6 @@
+using Cake.Common.Tools.Command;
+using System;
+
 namespace Cake.CodeQL.Cli.Install;
 
 /// <summary>
@@ -6,6 +9,7 @@ namespace Cake.CodeQL.Cli.Install;
 public class CodeQLInstallTool
 {
     private readonly ICakeContext _context;
+    private readonly ICollection<string> _executableNames = new[] { "codeql.exe", "codeql", };
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CodeQLInstallTool"/> class.
@@ -44,8 +48,8 @@ public class CodeQLInstallTool
             try { if (_context.FileExists(outFilePath)) _context.DeleteFile(outFilePath); } catch { }
         }
 
-        // 4. Verifies that the CodeQL CLI is correctly set up to create and analyze databases.
-        VerifyCodeQL();
+        // 5. Verifies that the CodeQL CLI is correctly set up to create and analyze databases.
+        VerifyCodeQL(settings);
     }
 
     /// <summary>
@@ -88,7 +92,24 @@ public class CodeQLInstallTool
         _context.StartProcess("tar", new ProcessSettings { Arguments = argBuilder });
     }
 
-    private void VerifyCodeQL() => _context.Command(toolExecutableNames: new[] { "codeql", "codeql.exe" }, arguments: "resolve qlpacks");
+    private void VerifyCodeQL(CodeQLInstallToolSettings settings)
+    {
+        var toolResolver = new CodeQLResolveToolPath(_context.FileSystem, _context.Environment);
+        var toolPaths = toolResolver.Find(_executableNames, settings.WorkingDirectory);
+
+        var exePath = toolPaths.FirstOrDefault(tp => _context.IsRunningOnWindows() && tp.HasExtension);
+
+        _context.Command
+        (
+            toolExecutableNames: _executableNames,
+            arguments: "resolve qlpacks",
+            settingsCustomization: cmdSettings =>
+            {
+                cmdSettings.ToolPath = exePath;
+                return cmdSettings;
+            }
+        );
+    }
 
     private DirectoryPath GetInstallDirectory(CodeQLInstallToolSettings settings) =>
         settings.InstallDirectory != null ? _context.MakeAbsolute(settings.InstallDirectory) : _context.MakeAbsolute(GetWorkingDirectory(settings).Combine("tools/codeql"));
