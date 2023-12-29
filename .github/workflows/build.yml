@@ -59,10 +59,10 @@ jobs:
         - name: Setup net6.0
           uses: actions/setup-dotnet@v3.0.3
           with:
-            dotnet-version: 6.x
+            dotnet-version: 8.x
 
         - name: Checkout
-          uses: actions/checkout@v3.5.2
+          uses: actions/checkout@v4
           with:
             fetch-depth: 0
 
