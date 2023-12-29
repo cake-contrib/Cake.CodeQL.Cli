@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AssemblyName>Cake.CodeQL.Cli</AssemblyName>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<PreserveCompilationContext>true</PreserveCompilationContext>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<WarningLevel>0</WarningLevel>
-		<DocumentationFile>bin\$(Configuration)\net6.0\$(AssemblyName).xml</DocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\net8.0\$(AssemblyName).xml</DocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
@@ -27,8 +27,8 @@
 		<RepositoryType>git</RepositoryType>
 		<Copyright>Copyright © 2022 - $([System.DateTime]::Now.Year) Cake Contributions Organization</Copyright>
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
-		<AssemblyVersion>3.0.0.0</AssemblyVersion>
-		<FileVersion>3.0.0.0</FileVersion>
+		<AssemblyVersion>4.0.0.0</AssemblyVersion>
+		<FileVersion>4.0.0.0</FileVersion>
 		<Nullable>warnings</Nullable>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
@@ -40,10 +40,10 @@
 		<None Include="icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Cake.Core" Version="3.0.0" PrivateAssets="All" />
-		<PackageReference Include="Cake.Common" Version="3.0.0" PrivateAssets="All" />
-		<PackageReference Include="Cake.Http" Version="3.0.2" />
-		<PackageReference Include="JWT" Version="10.0.2" />
+		<PackageReference Include="Cake.Core" Version="4.0.0" PrivateAssets="All" />
+		<PackageReference Include="Cake.Common" Version="4.0.0" PrivateAssets="All" />
+		<PackageReference Include="Cake.Http" Version="4.0.0" />
+		<PackageReference Include="JWT" Version="10.1.1" />
 	</ItemGroup>
 	<Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
 		<ItemGroup>

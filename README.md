@@ -1,7 +1,7 @@
 # Cake.CodeQL.Cli
 CodeQL Scanning from GitHub is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis. 
 
-This plugin is a set of Cake aliases for [GitHub CodeQL CLI](https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/about-codeql-code-scanning-in-your-ci-system) (.NET Core or .NET6) used for scanning code hosted on GitHub or GitHub Enterprise when GitHub Actions is not an option.
+This plugin is a set of Cake aliases for [GitHub CodeQL CLI](https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/about-codeql-code-scanning-in-your-ci-system) (.NET Core or .NET6 or greater) used for scanning code hosted on GitHub or GitHub Enterprise when GitHub Actions is not an option.
 
 > :exclamation: Please read the [GitHub CodeQL Terms and Conditions](https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md) before considering using this plugin.
 
@@ -17,7 +17,7 @@ This plugin is a set of Cake aliases for [GitHub CodeQL CLI](https://docs.github
 ```
 ### Cake Frosting Project
 ```xml
-<PackageReference Include="Cake.CodeQL.Cli" Version="3.2.0" />
+<PackageReference Include="Cake.CodeQL.Cli" Version="4.0.0" />
 ```
 
 ## Discussion
