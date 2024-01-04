@@ -5,8 +5,6 @@
 /// </summary>
 public class CodeQLCreateDatabaseToolSettings : CodeQLToolSettings
 {
-    private readonly List<CodeLanguage> _languages = new List<CodeLanguage>();
-
     /// <summary>
     /// Initializes a new instance of the <see cref="CodeQLCreateDatabaseToolSettings"/>
     /// </summary>
@@ -28,7 +26,7 @@ public class CodeQLCreateDatabaseToolSettings : CodeQLToolSettings
     /// Specify the identifier for the language to create a database for, one of: cpp`, `csharp`, `go`, `java`, `javascript`, `python`, and `ruby (use javascript to analyze TypeScript code). When used with --db-cluster, the option accepts a comma-separated list, or can be specified more than once.
     /// </summary>
     /// <remarks>This is required</remarks>
-    public IList<CodeLanguage> Languages => _languages;
+    public IList<CodeLanguage> Languages { get; set; } = new List<CodeLanguage>();
 
     /// <summary>
     ///Recommended. Use to specify the build command or script that invokes the build process for the codebase. Commands are run from the current folder or, where it is defined, from --source-root. Not needed for Python and JavaScript/TypeScript analysis.
@@ -66,11 +64,11 @@ public class CodeQLCreateDatabaseToolSettings : CodeQLToolSettings
         base.EvaluateCore(args);
 
         if (DatabaseDir == null) throw new ArgumentNullException(nameof(DatabaseDir), $"Missing required {nameof(DatabaseDir)} property.");
-        if (!_languages.Any()) throw new ArgumentException(nameof(Languages), $"At least one coding language is required to be specified.");
+        if (Languages is null || !Languages.Any()) throw new ArgumentException(nameof(Languages), $"At least one coding language is required to be specified.");
 
         args.AppendQuoted(DatabaseDir.FullPath);
 
-        args.AppendSwitch("--language", separator, string.Join(',', _languages));
+        args.AppendSwitch("--language", separator, string.Join(',', Languages));
 
         if (!string.IsNullOrWhiteSpace(BuildCommand))
         {
